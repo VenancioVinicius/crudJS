@@ -17,6 +17,21 @@ router.post('/pessoa', (req, res) => {
   });
 });
 
+//listar um em especifico 
+router.get('/pessoa/:id', (req, res) => {
+  const id = req.params.id;
+
+  const query = 'SELECT * FROM pessoa WHERE id = ?';
+  db.query(query, [id], (err, results) => {
+    if (err) {
+      console.log('Erro ao consultar uma pessoa: ' + err);
+      res.status(500).send('Erro ao consultar uma pessoa.');
+      return;
+    }
+    res.json(results);
+  });
+});
+
 //listar todas as pessoas
 router.get('/pessoas', (req, res) => {
   const query = 'SELECT * FROM pessoa';
