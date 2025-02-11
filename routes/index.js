@@ -59,6 +59,21 @@ router.put('/pessoa/:id', (req, res) => {
   });
 });
 
+//excluir uma pessoa do banco de dados
+router.delete('/pessoa/:id', (req, res) => {
+  const id = req.params.id;
+
+  const query = 'DELETE FROM pessoa WHERE id = ?';
+  db.query(query, [id], (err, results) => {
+    if (err) {
+      console.log('Erro ao excluir. ' + err);
+      res.status(500).send('Erro ao excluir.');
+      return;
+    }
+    res.json('Excluido com sucesso !');
+  });
+});
+
 //listar todas as pessoas
 router.get('/pessoas', (req, res) => {
   const query = 'SELECT * FROM pessoa';
