@@ -17,7 +17,7 @@ router.post('/pessoa', (req, res) => {
   });
 });
 
-//listar um em especifico 
+//listar uma pessoa em especifico 
 router.get('/pessoa/:id', (req, res) => {
   const id = req.params.id;
 
@@ -29,6 +29,33 @@ router.get('/pessoa/:id', (req, res) => {
       return;
     }
     res.json(results);
+  });
+});
+
+//Edição dos dados
+router.put('/pessoa/:id', (req, res) => {
+  const id = req.params.id;
+  const atualizacao = req.body;
+
+  let query = 'UPDATE pessoa SET';
+  let valores = [];
+
+  for (let campo in atualizacao){
+    query += ` ${campo} = ?, `;
+    valores.push(atualizacao[campo])
+  }
+
+  query = query.slice(0, -2);
+  query += ' WHERE id = ?';
+  valores.push(id);
+
+  db.query(query, valores, (err, results) => {
+    if (err) {
+      console.log('Erro ao atualizar: ' + err);
+      res.status(500).send('Erro ao atualizar.');
+      return;
+    }
+    res.send('Atualizado dados de pessoa.');
   });
 });
 
